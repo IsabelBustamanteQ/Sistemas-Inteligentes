@@ -111,6 +111,18 @@ class Rubik_cube():
         sides=[0,4,5,2]
         columns=[-1,0,-1,-1]
         self.column_motion(sides,columns)
+
+    
+    def left_clockwise(self):
+        sides=[0,4,5,2]
+        columns=[0,-1,0,0]
+        self.column_motion(sides,columns)
+   
+    def left_inverted(self):
+        sides=[0,2,5,4]
+        columns=[0,0,0,-1]
+        self.column_motion(sides,columns)
+    
     def column_motion(self,sides, columns):
         first_line=self.sides[sides[-1]][:,columns[-1]].copy()
         for position in range(len(sides)-1):
@@ -133,7 +145,9 @@ if __name__ == "__main__":
     # rubik.back_clockwise()
     # rubik.back_inverted()
     # rubik.right_clockwise()
-    rubik.right_inverted()
+    # rubik.right_inverted()
+    # rubik.left_clockwise()
+    rubik.left_inverted()
     rubik.show_cube()
 
 
