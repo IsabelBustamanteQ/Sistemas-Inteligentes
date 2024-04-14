@@ -1,34 +1,36 @@
 class Rubik_cube():
     def __init__(self):
-        self.up_side=[
+        self.sides=[
+            [
                         ["W","W","W"],
                         ["W","W","W"],
                         ["W","W","W"],
-        ]
-        self.front_side=[
-                        ["G","G","G"],
-                        ["G","G","G"],
-                        ["G","G","G"],
-        ]
-        self.down_side=[
-                        ["Y","Y","Y"],
-                        ["Y","Y","Y"],
-                        ["Y","Y","Y"],
-        ]
-        self.left_side=[
+            ],
+            [
                         ["O","O","O"],
                         ["O","O","O"],
                         ["O","O","O"],
-        ]
-        self.right_side=[
+            ],
+            [
+                        ["G","G","G"],
+                        ["G","G","G"],
+                        ["G","G","G"],
+            ],
+            [
                         ["R","R","R"],
                         ["R","R","R"],
                         ["R","R","R"],
-        ]
-        self.back_side=[
+            ],
+            [
                         ["B","B","B"],
                         ["B","B","B"],
                         ["B","B","B"],
+            ],
+            [
+                        ["Y","Y","Y"],
+                        ["Y","Y","Y"],
+                        ["Y","Y","Y"],
+            ]
         ]
         
     def print_side(self, side):
@@ -39,14 +41,36 @@ class Rubik_cube():
             print(str) 
             str=""      
     def show_cube(self):
-        self.print_side(self.up_side)
-        self.print_side(self.left_side)
-        self.print_side(self.front_side)
-        self.print_side(self.right_side)
-        self.print_side(self.back_side)
-        self.print_side(self.down_side)
+        for side in self.sides:
+            self.print_side(side)
+            print("------")
+    def up_clockwise(self):
+        sides=[1,2,3,4]
+        self.up_wise(sides,0)
+        
     
+    def up_inverted(self):
+        sides=[4,3,2,1]
+        self.up_wise(sides,0)
+
+    def up_wise(self, sides_list, row):
+        sides=sides_list
+        first_side_line=self.sides[sides[-1]][row]
+        print(first_side_line)
+        for position in range(len(sides)-1):
+            print(position)
+            first_line=self.sides[sides[position]][row]
+            self.sides[sides[position-1]][row]=first_line
+            print(first_line)
+        self.sides[sides[2]][row]=first_side_line
+
 if __name__ == "__main__":
     rubik=Rubik_cube()
+    print("Up clockwise")
+    rubik.up_clockwise()
+    # print("Up inverted")
+    # rubik.up_inverted()
     rubik.show_cube()
+    
+
 
