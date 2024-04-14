@@ -74,25 +74,25 @@ class Rubik_cube():
     def front_clockwise(self):
         sides=[0,1,5,3]
         line_number=[-1,-1,0,0]
-        self.column_motion(sides,line_number)
+        self.row_and_column_motion(sides,line_number)
         
     def front_inverted(self):
         sides=[0,3,5,1]
         line_number=[-1,0,0,-1]
-        self.column_motion(sides,line_number)
+        self.row_and_column_motion(sides,line_number)
     
     
     def back_clockwise(self):
         sides=[0,3,5,1]
         line_number=[0,-1,-1,0]
-        self.column_motion(sides,line_number)
+        self.row_and_column_motion(sides,line_number)
         
     def back_inverted(self):
         sides=[0,1,5,3]
         line_number=[0,0,-1,-1]
-        self.column_motion(sides,line_number)
+        self.row_and_column_motion(sides,line_number)
         
-    def column_motion(self,sides,line_number):
+    def row_and_column_motion(self,sides,line_number):
         first_line=(self.sides[sides[3]][:,line_number[-1]]).copy()
         print("Primera línea:",first_line)
         for position in range(len(sides)-1):
