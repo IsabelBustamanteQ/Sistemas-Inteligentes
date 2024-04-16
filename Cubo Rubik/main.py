@@ -66,11 +66,11 @@ class Rubik_cube():
         self.row_motion(sides,-1)
         self.roll_left(5)
     
-    def E_clockwise(self):
+    def e_clockwise(self):
         sides=[1,2,3,4]
         self.row_motion(sides,1)
     
-    def E_inverted(self):
+    def e_inverted(self):
         sides=[4,3,2,1]
         self.row_motion(sides,1)
 
@@ -106,12 +106,12 @@ class Rubik_cube():
         self.row_and_column_motion(sides,line_number)
         self.roll_left(4)
 
-    def S_clockwise(self):
+    def s_clockwise(self):
         sides=[0,1,5,3]
         line_number=[1,1,1,1]
         self.row_and_column_motion(sides,line_number)
     
-    def S_inverted(self):
+    def s_inverted(self):
         sides=[0,3,5,1]
         line_number=[1,1,1,1]
         self.row_and_column_motion(sides,line_number)
@@ -151,12 +151,12 @@ class Rubik_cube():
         self.column_motion(sides,columns)
         self.roll_left(1)
     
-    def M_clockwise(self):
+    def m_clockwise(self):
         sides=[0,2,5,4]
         columns=[1,1,1,1]
         self.column_motion(sides,columns)
 
-    def M_inverted(self):
+    def m_inverted(self):
         sides=[0,4,5,2]
         columns=[1,1,1,1]
         self.column_motion(sides,columns)
@@ -185,8 +185,49 @@ class Rubik_cube():
             if not self.side_is_finished(side):
                 return False
         return True
+    def action(self,action):
+        match action:
+            case "U":
+                self.up_clockwise()
+            case "U'":
+                self.up_inverted()
+            case "D":
+                self.down_clockwise()
+            case "D'":
+                self.down_inverted()
+            case "F":
+                self.front_clockwise()
+            case "F'":
+                self.front_inverted()
+            case "B":
+                self.back_clockwise()
+            case "B'":
+                self.back_inverted()
+            case "R":
+                self.right_clockwise()
+            case "R'":
+                self.right_inverted()
+            case "L":
+                self.left_clockwise()
+            case "L'":
+                self.left_inverted()
+            case "E":
+                self.e_clockwise()
+            case "E'":
+                self.e_inverted()
+            case "S":
+                self.s_clockwise()
+            case "S'":
+                self.s_inverted()
+            case "M":
+                self.m_clockwise()
+            case "M'":
+                self.m_inverted()
+            
+    
 if __name__ == "__main__":
     rubik=Rubik_cube()
+    rubik.action("U")
     # print("Up clockwise")
     # rubik.up_clockwise()
     # print("Up inverted")
@@ -203,14 +244,13 @@ if __name__ == "__main__":
     # rubik.right_inverted()
     # rubik.left_clockwise()
     # rubik.left_inverted()
-    # rubik.E_clockwise()
-    # rubik.E_inverted()
-    # rubik.S_clockwise()
-    # rubik.S_inverted()
-    # rubik.M_clockwise()
-    rubik.M_inverted()
+    # rubik.e_clockwise()
+    # rubik.e_inverted()
+    # rubik.s_clockwise()
+    # rubik.s_inverted()
+    # rubik.m_clockwise()
+    # rubik.m_inverted()
     rubik.show_cube()
-    
     # print(rubik.is_finished(0))
     # print(rubik.is_terminal())
 
