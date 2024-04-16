@@ -148,7 +148,15 @@ class Rubik_cube():
     def roll_side(self,side,rotation):
         side_trans=np.transpose(self.sides[side])
         self.sides[side]=np.flip(side_trans,axis = rotation)
-        
+    def side_is_finished(self,side):
+        return np.all(self.sides[side]==self.sides[side][1][1])
+    def is_terminal(self):
+        # print(len(self.sides))
+        for side in range(len(self.sides)-1):
+            # state=self.side_is_finished(side)
+            if not self.side_is_finished(side):
+                return False
+        return True
 if __name__ == "__main__":
     rubik=Rubik_cube()
     # print("Up clockwise")
@@ -168,6 +176,8 @@ if __name__ == "__main__":
     # rubik.left_clockwise()
     # rubik.left_inverted()
     # rubik.show_cube()
+    # print(rubik.is_finished(0))
+    print(rubik.is_terminal())
 
 
 
