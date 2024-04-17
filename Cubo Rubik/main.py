@@ -5,44 +5,40 @@ class Rubik_cube():
     def __init__(self):
         self.sides=np.array([
             [
-                        ["W1","W2","W3"],
-                        ["W4","W5","W6"],
-                        ["W7","W8","W9"],
+                        ["W","W","W"],
+                        ["W","W","W"],
+                        ["W","W","W"],
             ],
             [
-                        ["O1","O2","O3"],
-                        ["O4","O5","O6"],
-                        ["O7","O8","O9"],
+                        ["O","O","O"],
+                        ["O","O","O"],
+                        ["O","O","O"],
             ],
             [
-                        ["G1","G2","G3"],
-                        ["G4","G5","G6"],
-                        ["G7","G8","G9"],
+                        ["G","G","G"],
+                        ["G","G","G"],
+                        ["G","G","G"],
             ],
             [
-                        ["R1","R2","R3"],
-                        ["R4","R5","R6"],
-                        ["R7","R8","R9"],
+                        ["R","R","R"],
+                        ["R","R","R"],
+                        ["R","R","R"],
             ],
             [
-                        ["B1","B2","B3"],
-                        ["B4","B5","B6"],
-                        ["B7","B8","B9"],
+                        ["B","B","B"],
+                        ["B","B","B"],
+                        ["B","B","B"],
             ],
             [
-                        ["Y1","Y2","Y3"],
-                        ["Y4","Y5","Y6"],
-                        ["Y7","Y8","Y9"],
+                        ["Y","Y","Y"],
+                        ["Y","Y","Y"],
+                        ["Y","Y","Y"],
             ]
         ])
         
     def print_side(self, side):
-        str=""
         for line in side:
-            for piece in line:
-                str=str+piece+" "
-            print(str) 
-            str=""      
+            print(" ".join(line))
     def show_cube(self):
         for side in self.sides:
             self.print_side(side)
@@ -189,11 +185,16 @@ class Rubik_cube():
         self.sides[side]=np.flip(side_trans,axis = rotation)
     def side_is_finished(self,side):
         return np.all(self.sides[side]==self.sides[side][1][1])
-    def is_terminal(self):
-        for side in range(len(self.sides)-1):
-            if not self.side_is_finished(side):
-                return False
-        return True
+    def is_goal_state(self):
+        return np.all(self.sides[0] == self.sides[0][1][1]) and \
+               np.all(self.sides[1] == self.sides[1][1][1]) and \
+               np.all(self.sides[2] == self.sides[2][1][1]) and \
+               np.all(self.sides[3] == self.sides[3][1][1]) and \
+               np.all(self.sides[4] == self.sides[4][1][1]) and \
+               np.all(self.sides[5] == self.sides[5][1][1])
+    def valid_moves(self):
+        return ["U", "U'", "D", "D'", "F", "F'", "B", "B'", "R", "R'", "L", "L'","S","S'","E","E'","M","M'"]
+
     def action(self,action):
         match action:
             case "U":
@@ -232,11 +233,31 @@ class Rubik_cube():
                 self.m_clockwise()
             case "M'":
                 self.m_inverted()
-    
+
+    def bfs_solve(self):
+        queue = deque([(self, [])])
+        while queue:
+            current_cube, moves = queue.popleft()
+
+            if current_cube.is_goal_state():
+                return moves
+            for move in self.valid_moves():
+                new_cube = copy.deepcopy(current_cube)
+                new_cube.action(move)
+                queue.append((new_cube, moves + [move]))
+
+        return None
 if __name__ == "__main__":
     rubik=Rubik_cube()
-    rubik.action("")
-    rubik.show_cube()
+    rubik.action("M")
+    rubik.action("F")
+    rubik.action("L")
+    solution = rubik.bfs_solve()
+    if solution:
+        print("Solución encontrada en {} movimientos:".format(len(solution)))
+        print(solution)
+    else:
+        print("No se encontró solución.")
     
 
 
