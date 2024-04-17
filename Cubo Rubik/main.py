@@ -1,4 +1,6 @@
 import numpy as np
+from collections import deque
+import copy
 class Rubik_cube():
     def __init__(self):
         self.sides=np.array([
@@ -85,87 +87,96 @@ class Rubik_cube():
     def front_clockwise(self):
         sides=[0,1,5,3]
         line_number=[-1,-1,0,0]
-        self.row_and_column_motion(sides,line_number)
+        self.row_and_column_motion(sides,line_number,True)
         self.roll_right(2)
         
     def front_inverted(self):
         sides=[0,3,5,1]
         line_number=[-1,0,0,-1]
-        self.row_and_column_motion(sides,line_number)
+        self.row_and_column_motion(sides,line_number,False)
         self.roll_left(2)
     
     def back_clockwise(self):
         sides=[0,3,5,1]
         line_number=[0,-1,-1,0]
-        self.row_and_column_motion(sides,line_number)
+        self.row_and_column_motion(sides,line_number,False)
         self.roll_right(4)
         
     def back_inverted(self):
         sides=[0,1,5,3]
         line_number=[0,0,-1,-1]
-        self.row_and_column_motion(sides,line_number)
+        self.row_and_column_motion(sides,line_number,True)
         self.roll_left(4)
 
     def s_clockwise(self):
         sides=[0,1,5,3]
         line_number=[1,1,1,1]
-        self.row_and_column_motion(sides,line_number)
+        self.row_and_column_motion(sides,line_number,True)
     
     def s_inverted(self):
         sides=[0,3,5,1]
         line_number=[1,1,1,1]
-        self.row_and_column_motion(sides,line_number)
+        self.row_and_column_motion(sides,line_number,False)
     
-    def row_and_column_motion(self,sides,line_number):
+    def row_and_column_motion(self,sides,line_number,right):
+        # Right false para F'
         first_line=(self.sides[sides[3]][:,line_number[-1]]).copy()
         for position in range(len(sides)-1):
             if position%2==0: #si es fila
                 line=self.sides[sides[position]][line_number[position]]
+                line=self.flip_line(line,not right)
                 self.sides[sides[position-1]][:,line_number[position-1]]=line
             else:#si es columna
                 line=self.sides[sides[position]][:,line_number[position]]
-                self.sides[sides[position-1]][line_number[position-1]]=line
-        self.sides[sides[2]][line_number[2]]=first_line
-
+                self.sides[sides[position-1]][line_number[position-1]]=self.flip_line(line,right)
+        self.sides[sides[2]][line_number[2]]=self.flip_line(first_line,right)
+    def flip_line(self,line,right):
+        if right:
+            return np.flip(line)
+        return line
     def right_clockwise(self):
         sides=[0,2,5,4]
         columns=[-1,-1,-1,0]
-        self.column_motion(sides,columns)
+        self.column_motion(sides,columns,True)
         self.roll_right(3)
     
     def right_inverted(self):
         sides=[0,4,5,2]
         columns=[-1,0,-1,-1]
-        self.column_motion(sides,columns)
+        self.column_motion(sides,columns,False)
         self.roll_left(3)
     
     def left_clockwise(self):
         sides=[0,4,5,2]
         columns=[0,-1,0,0]
-        self.column_motion(sides,columns)
+        self.column_motion(sides,columns,False)
         self.roll_right(1)
    
     def left_inverted(self):
         sides=[0,2,5,4]
         columns=[0,0,0,-1]
-        self.column_motion(sides,columns)
+        self.column_motion(sides,columns,True)
         self.roll_left(1)
     
     def m_clockwise(self):
         sides=[0,2,5,4]
         columns=[1,1,1,1]
-        self.column_motion(sides,columns)
+        self.column_motion(sides,columns,True)
 
     def m_inverted(self):
         sides=[0,4,5,2]
         columns=[1,1,1,1]
-        self.column_motion(sides,columns)
-    def column_motion(self,sides, columns):
+        self.column_motion(sides,columns,False)
+    def column_motion(self,sides, columns,right):
         first_line=self.sides[sides[-1]][:,columns[-1]].copy()
         for position in range(len(sides)-1):
             line=self.sides[sides[position]][:,columns[position]]
+            if position==0:
+                line=self.flip_line(line,right)
+            else:
+                line=self.flip_line(line,not right)
             self.sides[sides[position-1]][:,columns[position-1]]=line
-        self.sides[sides[2]][:,columns[2]]=first_line
+        self.sides[sides[2]][:,columns[2]]=self.flip_line(first_line,right)
 
     def roll_right(self,side):
         self.roll_side(side,1)
@@ -179,9 +190,7 @@ class Rubik_cube():
     def side_is_finished(self,side):
         return np.all(self.sides[side]==self.sides[side][1][1])
     def is_terminal(self):
-        # print(len(self.sides))
         for side in range(len(self.sides)-1):
-            # state=self.side_is_finished(side)
             if not self.side_is_finished(side):
                 return False
         return True
@@ -223,37 +232,12 @@ class Rubik_cube():
                 self.m_clockwise()
             case "M'":
                 self.m_inverted()
-            
     
 if __name__ == "__main__":
     rubik=Rubik_cube()
-    rubik.action("U")
-    # print("Up clockwise")
-    # rubik.up_clockwise()
-    # print("Up inverted")
-    # rubik.up_inverted()
-    # print("down Clockwise")
-    # rubik.down_clockwise()
-    # print("down inverted")
-    # rubik.down_inverted()
-    # rubik.front_clockwise()
-    # rubik.front_inverted()
-    # rubik.back_clockwise()
-    # rubik.back_inverted()
-    # rubik.right_clockwise()
-    # rubik.right_inverted()
-    # rubik.left_clockwise()
-    # rubik.left_inverted()
-    # rubik.e_clockwise()
-    # rubik.e_inverted()
-    # rubik.s_clockwise()
-    # rubik.s_inverted()
-    # rubik.m_clockwise()
-    # rubik.m_inverted()
+    rubik.action("")
     rubik.show_cube()
-    # print(rubik.is_finished(0))
-    # print(rubik.is_terminal())
-
+    
 
 
 
