@@ -305,6 +305,9 @@ class Rubik_cube():
                 lines = file.readlines()
                 cube = []
                 side=[]
+                if len(lines)!=18:
+                    print("El archivo debe contener 18 lineas, tiene ",len(lines), " lineas")
+                    return False
                 for line in lines:
                     array=line.split()
                     if len(side)<3:
@@ -345,9 +348,26 @@ class Solver():
                     open.put((new_cost,new_state))
                     closed.add(new_state)
         return False
+class Validator():
+    def __init__(self,cube) -> None:
+        self.cube=cube
+    def valid_letters(self):
+        allowed_letters = {'W', 'O', 'G', 'R', 'B', 'Y'}
+        if np.all(np.isin(self.cube, list(allowed_letters))):
+            print("El array contiene solo las letras permitidas.")
+            return True
+        else:
+            print("El archivo contiene letras NO VALIDAS")
+            return False
+    def valid_letter_quantity(self):
+        allowed_letters = {'W', 'O', 'G', 'R', 'B', 'Y'}
+        for letter in allowed_letters:
+            letter_quantity = np.count_nonzero(self.cube == letter)
+            if not letter_quantity== 9:
+                print("El archivo contiene ",letter_quantity, " letras ",letter)
 if __name__ == "__main__":
     rubik=Rubik_cube()
-    rubik.load_cube("cube1.txt")
+    rubik.load_cube("cube0.txt")
     # rubik.action("F")
     # rubik.action("L")
     # rubik.action("D'")
@@ -355,6 +375,9 @@ if __name__ == "__main__":
     # rubik.action("B")
     rubik.show_cube()
     print(rubik.sides.shape)
+    val=Validator(rubik.sides)
+    val.valid_letters()
+    val.valid_letter_quantity()
     # # print(rubik.mishattan_distance())
     # solver=a_star_solve()
     
