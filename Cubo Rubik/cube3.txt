@@ -1,0 +1,46 @@
+W W W
+W W W
+O O O
+------
+O O Y
+O O Y
+O O Y
+------
+G G G
+G G G
+G G G
+------
+W R R
+W R R
+W R R
+------
+B B B
+B B B
+B B B
+------
+R R R
+Y Y Y
+Y Y Y
+------
+[]
+["F'"]
+camino encontrado:  ["F'"]
+PS C:\UCB\SEMESTRE 7\SISTEMAS INTELIGENTES\PRACTICAS SIS INTELIGENTES\Cubo Rubik> & C:/Users/Isabel/anaconda3/python.exe "c:/UCB/SEMESTRE 7/SISTEMAS INTELIGENTES/PRACTICAS SIS INTELIGENTES/Cubo Rubik/main.py"
+G R R
+W W O
+B B B
+O B Y
+W O O
+W G G
+O O O
+W G G
+W R R
+W G G
+W R G
+B B G
+Y B W
+Y B R
+Y Y R
+R Y Y
+R Y Y
+B O O

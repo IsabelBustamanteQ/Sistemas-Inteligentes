@@ -268,6 +268,10 @@ class Rubik_cube():
                 self.m_clockwise()
             case "M'":
                 self.m_inverted()
+    
+    def add_move(self,move):
+        self.moves.append(move)
+
     def misplaced_pieces(self):
         not_in_correct_place=sum(1 for side in self.sides for row in side for element in row if element!=side[1][1])
         return not_in_correct_place
@@ -290,16 +294,28 @@ class Rubik_cube():
         manhattan_dist = self.manhattan_distance()
         misplaced = self.misplaced_pieces()
 
-        weight_manhattan = 1
-        weight_misplaced = 1
-
-        combined_cost = weight_manhattan * manhattan_dist + weight_misplaced * misplaced
+        combined_cost = manhattan_dist + misplaced
 
         return combined_cost
-    def add_move(self,move):
-        self.moves.append(move)
     def __lt__(self,other):
         return self.combined_heuristic()<other.combined_heuristic()
+    
+    def load_cube(self,file_path):
+        with open(file_path, 'r') as file:
+                lines = file.readlines()
+                cube = []
+                side=[]
+                for line in lines:
+                    array=line.split()
+                    if len(side)<3:
+                        side.append(array)
+                    if len(side)==3:    
+                        cube.append(side)
+                        print(side)
+                        side=[]
+
+                self.sides=np.array(cube)
+
 class Solver():
     def __init__(self,cube):
         self.cube=cube
@@ -331,21 +347,16 @@ class Solver():
         return False
 if __name__ == "__main__":
     rubik=Rubik_cube()
-    rubik.action("F")
-    rubik.action("L")
-    # solution = rubik.bfs_solve()
-    # solution=rubik.a_star_solve()
-    # if solution:
-    #     print("Solución encontrada en {} movimientos:".format(len(solution)))
-    #     print(solution)
-    # else:
-    #     print("No se encontró solución.")
-    # rubik.show_cube()
-    # print(rubik.misplaced_pieces())
-    # print(rubik.manhattan_distance())
-    solver=Solver(rubik)
-    # print(solver.heuristic(solver.cube))
-    solver.a_star_solve()
-
+    rubik.load_cube("cube1.txt")
+    # rubik.action("F")
+    # rubik.action("L")
+    # rubik.action("D'")
+    # rubik.action("U'")
+    # rubik.action("B")
+    rubik.show_cube()
+    print(rubik.sides.shape)
+    # # print(rubik.mishattan_distance())
+    # solver=a_star_solve()
+    
 
 
