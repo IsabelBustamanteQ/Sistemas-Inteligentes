@@ -4,52 +4,52 @@ from collections import deque
 import copy
 class Rubik_cube():
     def __init__(self):
-        self.sides=np.array([
-            [
-                        ["W","W","W"],
-                        ["W","W","W"],
-                        ["W","W","W"]
-            ],
-            [
-                        ["O","O","O"],
-                        ["O","O","O"],
-                        ["O","O","O"]
-            ],
-            [
-                        ["G","G","G"],
-                        ["G","G","G"],
-                        ["G","G","G"]
-            ],
-            [
-                        ["R","R","R"],
-                        ["R","R","R"],
-                        ["R","R","R"]
-            ],
-            [
-                        ["B","B","B"],
-                        ["B","B","B"],
-                        ["B","B","B"]
-            ],
-            [
-                        ["Y","Y","Y"],
-                        ["Y","Y","Y"],
-                        ["Y","Y","Y"]
-            ]
-        ])
         # self.sides=np.array([
-        #     [['O', 'G', 'W'], ['R', 'O', 'B'], ['Y', 'O', 'B']
+        #     [
+        #                 ["W","W","W"],
+        #                 ["W","W","W"],
+        #                 ["W","W","W"]
         #     ],
-        #     [['G', 'G', 'R'], ['G', 'G', 'G'], ['G', 'Y', 'B']
+        #     [
+        #                 ["O","O","O"],
+        #                 ["O","O","O"],
+        #                 ["O","O","O"]
         #     ],
-        #     [['G', 'Y', 'R'], ['Y', 'W', 'O'], ['R', 'B', 'W']
+        #     [
+        #                 ["G","G","G"],
+        #                 ["G","G","G"],
+        #                 ["G","G","G"]
         #     ],
-        #     [['Y', 'R', 'O'], ['W', 'B', 'W'], ['O', 'B', 'O'],
+        #     [
+        #                 ["R","R","R"],
+        #                 ["R","R","R"],
+        #                 ["R","R","R"]
         #     ],
-        #     [['G', 'W', 'Y'], ['R', 'Y', 'O'], ['Y', 'R', 'R']
+        #     [
+        #                 ["B","B","B"],
+        #                 ["B","B","B"],
+        #                 ["B","B","B"]
         #     ],
-        #     [['W', 'O', 'B'], ['B', 'R', 'W'], ['W', 'Y', 'B']
+        #     [
+        #                 ["Y","Y","Y"],
+        #                 ["Y","Y","Y"],
+        #                 ["Y","Y","Y"]
         #     ]
         # ])
+        self.sides=np.array([
+            [['O', 'G', 'W'], ['R', 'O', 'B'], ['Y', 'O', 'B']
+            ],
+            [['G', 'G', 'R'], ['G', 'G', 'G'], ['G', 'Y', 'B']
+            ],
+            [['G', 'Y', 'R'], ['Y', 'W', 'O'], ['R', 'B', 'W']
+            ],
+            [['Y', 'R', 'O'], ['W', 'B', 'W'], ['O', 'B', 'O'],
+            ],
+            [['G', 'W', 'Y'], ['R', 'Y', 'O'], ['Y', 'R', 'R']
+            ],
+            [['W', 'O', 'B'], ['B', 'R', 'W'], ['W', 'Y', 'B']
+            ]
+        ])
 #         self.cubo2 = {
 #             'U': np.array([['B', 'R', 'R'], ['B', 'W', 'W'], ['B', 'W', 'W']]),  # Upper (arriba)
 #             'D': np.array([['Y', 'Y', 'O'], ['Y', 'Y', 'O'], ['G', 'G', 'G']]),  # Down (abajo)
@@ -281,18 +281,48 @@ class Rubik_cube():
                 queue.append((new_cube, moves + [move]))
         return None
     def heuristic(self):
-        not_in_correct_place=[element for side in self.sides for row in side for element in row if element!=side[1][1]]
-        print(len(not_in_correct_place))
+        not_in_correct_place=sum(1 for side in self.sides for row in side for element in row if element!=side[1][1])
+        return not_in_correct_place
+class State():
+    def __init__(self,cube):
+        self.cube=cube
+        self.moves=[]
+    def __lt__(self,other):
+        return self.cube.heuristic()<other.cube.heuristic()
+    def add_move(self,move):
+        self.moves.append(move)
+
+class Solver():
+    def __init__(self,state):
+        self.state=state
+    def heuristic(self,state):
+        not_in_correct_place=sum(1 for side in state.cube.sides for row in side for element in row if element!=side[1][1])
+        return not_in_correct_place
 
     def a_star_solve(self):
-        start_state=copy.deepcopy(self.sides)
-        opened=[start_state]
-        closed=[]
-
-
-
-
-
+        start_state=copy.deepcopy(self.state)
+        open=PriorityQueue()
+        closed=set()
+        f_initial=self.heuristic(start_state)
+        open.put((f_initial,start_state))
+        while not open.empty():
+            current_cost,current_state=open.get()
+            closed.add(current_state)
+            print(current_state.moves)
+            if current_state.cube.is_goal_state():
+                # Devolver camino
+                print("camino encontrado")
+                print(current_state.moves)
+                return True
+            for move in current_state.cube.valid_moves():
+                new_state=copy.deepcopy(current_state)
+                new_state.cube.action(move)
+                new_state.add_move(move)
+                new_cost=current_cost+self.heuristic(new_state)
+                if new_state not in closed:                
+                    open.put((new_cost,new_state))
+                    closed.add(new_state)
+        return False
 if __name__ == "__main__":
     rubik=Rubik_cube()
     # rubik.action("M")
@@ -306,7 +336,11 @@ if __name__ == "__main__":
     # else:
     #     print("No se encontró solución.")
     rubik.show_cube()
-    rubik.heuristic()
+    # rubik.heuristic()
+    state=State(rubik)
+    solver=Solver(state)
+    print(solver.heuristic(solver.state))
+    solver.a_star_solve()
 
 
 
