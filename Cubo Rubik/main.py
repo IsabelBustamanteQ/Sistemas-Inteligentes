@@ -5,7 +5,6 @@ import subprocess
 if __name__ == "__main__":
     rubik=Rubik_cube()
     while True:
-        
         print("MENÚ DE OPCIONES:")
         print("1. Leer cubo de archivo")
         print("2. Mostrar cubo actual")
@@ -19,7 +18,6 @@ if __name__ == "__main__":
                 file_name=input("introduce el nombre del archivo que contiene el cubo rubik: ")
 
                 success=rubik.load_cube(file_name)
-                # rubik.show_cube()
                 if success:
                     print("El cubo fue cargado exitósamente")
                 else:

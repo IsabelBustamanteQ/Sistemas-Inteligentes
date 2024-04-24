@@ -3,6 +3,7 @@
 Isabel Bustamante Quiroz
 ## 2. Descripción del Proyecto
 El proyecto es un programa que te permite leer un cubo rubik a partir de un archivo de texto y te da instrucciones de cómo resolverlo.
+El tiempo de ejecución puede variar según la dificultad del cubo, hasta 7 movimientos se tiene un tiempo estimado de 150 segundos.
 ## 3. Requerimientos de Entorno
 El presente proyecto se realizó en un entorno Python 3.11.5
 Se recomienda tener al menos 8GB de RAM para disminuir problemas en el uso de memoria del programa
@@ -68,7 +69,7 @@ Al escoger la opcion "3", el programa empezará a buscar una solución al cubo q
 En caso de que el cube esté armado, te mostrará el mensaje "El cubo ya está armado"
 **Nota:** 
 * Esta opcion no modifica el cubo que se encuentra cargado, sólo muestra la solución.
-* Si el cubo es muy dificil de armar puede tardar más de 20 minutos en encontrar la solución.
+* Si el cubo es muy dificil de armar puede tardar mucho tiempo en encontrar la solución.
 * Si deseas cancelar la ejecución del programa, presiona Ctrl+c
 #### 0. Salir
 Al escoger la opcion "0", el programa finaliza.
