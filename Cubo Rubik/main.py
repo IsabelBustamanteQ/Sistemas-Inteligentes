@@ -3,7 +3,6 @@ from Validator import Validator
 from Solver import Solver
 import subprocess
 if __name__ == "__main__":
-    # rubik.load_cube("invalid_cube2.txt")
     rubik=Rubik_cube()
     while True:
         
@@ -35,5 +34,3 @@ if __name__ == "__main__":
                     print("Noo se encontró la solucion")
         wait=input("Presiona enter para continuar")
         subprocess.call(["cmd.exe", "/C", "cls"])
-
-

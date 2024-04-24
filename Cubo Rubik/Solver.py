@@ -31,6 +31,9 @@ class Solver():
                     closed.add(new_state)
         return False
     def instructions_to_solve(self, moves):
+        if len(moves)==0:
+            print("El cubo ya está armado")
+            return True
         print("SOLUCION ENCONTRADA:")
         number_step=1
         for move in moves:
