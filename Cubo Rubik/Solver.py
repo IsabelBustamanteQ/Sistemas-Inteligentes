@@ -62,5 +62,17 @@ class Solver():
                     step="Izquierda a la Derecha"
                 case "L'":
                     step="Izquierda a la Izquierda"
+                case "E":
+                    step="Eje Y Izquierda"
+                case "E'":
+                    step="Eje Y Derecha"
+                case "S":
+                    step="Eje Z Derecha"
+                case "S'":
+                    step="Eje Z Izquierda"
+                case "M":
+                    step="Eje X Derecha (hacia atrás)"
+                case "M'":
+                    step="Eje X Izquierda (hacia adelante)"
             print("Paso ",number_step,": ",step," (",move,")")
             number_step+=1

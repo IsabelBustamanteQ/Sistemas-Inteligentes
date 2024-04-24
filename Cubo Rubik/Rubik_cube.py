@@ -5,36 +5,12 @@ class Rubik_cube():
     def __init__(self):
         self.moves=[]
         self.sides=np.array([
-            [
-                        ["W","W","W"],
-                        ["W","W","W"],
-                        ["W","W","W"]
-            ],
-            [
-                        ["O","O","O"],
-                        ["O","O","O"],
-                        ["O","O","O"]
-            ],
-            [
-                        ["G","G","G"],
-                        ["G","G","G"],
-                        ["G","G","G"]
-            ],
-            [
-                        ["R","R","R"],
-                        ["R","R","R"],
-                        ["R","R","R"]
-            ],
-            [
-                        ["B","B","B"],
-                        ["B","B","B"],
-                        ["B","B","B"]
-            ],
-            [
-                        ["Y","Y","Y"],
-                        ["Y","Y","Y"],
-                        ["Y","Y","Y"]
-            ]
+            [["W","W","W"],["W","W","W"],["W","W","W"]],
+            [["O","O","O"],["O","O","O"],["O","O","O"]],
+            [["G","G","G"],["G","G","G"],["G","G","G"]],
+            [["R","R","R"],["R","R","R"],["R","R","R"]],
+            [["B","B","B"],["B","B","B"],["B","B","B"]],
+            [["Y","Y","Y"],["Y","Y","Y"],["Y","Y","Y"]]
         ])
         
     def print_side(self, side):
@@ -119,11 +95,11 @@ class Rubik_cube():
         # Right false para F'
         first_line=(self.sides[sides[3]][:,line_number[-1]]).copy()
         for position in range(len(sides)-1):
-            if position%2==0: #si es fila
+            if position%2==0:
                 line=self.sides[sides[position]][line_number[position]]
                 line=self.flip_line(line,not right)
                 self.sides[sides[position-1]][:,line_number[position-1]]=line
-            else:#si es columna
+            else:
                 line=self.sides[sides[position]][:,line_number[position]]
                 self.sides[sides[position-1]][line_number[position-1]]=self.flip_line(line,right)
         self.sides[sides[2]][line_number[2]]=self.flip_line(first_line,right)
@@ -195,9 +171,7 @@ class Rubik_cube():
                np.all(self.sides[5] == self.sides[5][1][1])
 
     def valid_moves(self):
-        return ["U", "U'", "D", "D'", "F", "F'", "B", "B'", "R", "R'", "L", "L'"
-                # ,"S","S'","E","E'","M","M'"
-                ]
+        return ["U", "U'", "D", "D'", "F", "F'", "B", "B'", "R", "R'", "L", "L'"]
 
     def action(self,action):
         match action:
