@@ -1,5 +1,6 @@
 
 import numpy as np
+from Validator import Validator 
 class Rubik_cube():
     def __init__(self):
         self.moves=[]
@@ -269,6 +270,7 @@ class Rubik_cube():
         return self.combined_heuristic()<other.combined_heuristic()
     
     def load_cube(self,file_path):
+        
         with open(file_path, 'r') as file:
                 lines = file.readlines()
                 cube = []
@@ -282,7 +284,10 @@ class Rubik_cube():
                         side.append(array)
                     if len(side)==3:    
                         cube.append(side)
-                        print(side)
                         side=[]
+                possible_cube=np.array(cube)
+                validator=Validator(possible_cube)
+                if validator.all_validations():
+                    self.sides=possible_cube
 
-                self.sides=np.array(cube)
+                
