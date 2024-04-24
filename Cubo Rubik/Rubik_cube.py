@@ -270,24 +270,28 @@ class Rubik_cube():
         return self.combined_heuristic()<other.combined_heuristic()
     
     def load_cube(self,file_path):
-        
-        with open(file_path, 'r') as file:
-                lines = file.readlines()
-                cube = []
-                side=[]
-                if len(lines)!=18:
-                    print("El archivo debe contener 18 lineas, tiene ",len(lines), " lineas")
-                    return False
-                for line in lines:
-                    array=line.split()
-                    if len(side)<3:
-                        side.append(array)
-                    if len(side)==3:    
-                        cube.append(side)
-                        side=[]
-                possible_cube=np.array(cube)
-                validator=Validator(possible_cube)
-                if validator.all_validations():
-                    self.sides=possible_cube
+        try:
+            with open(file_path, 'r') as file:
+                    lines = file.readlines()
+                    cube = []
+                    side=[]
+                    if len(lines)!=18:
+                        print("El archivo debe contener 18 lineas, tiene ",len(lines), " lineas")
+                        return False
+                    for line in lines:
+                        array=line.split()
+                        if len(side)<3:
+                            side.append(array)
+                        if len(side)==3:    
+                            cube.append(side)
+                            side=[]
+                    possible_cube=np.array(cube)
+                    validator=Validator(possible_cube)
+                    if validator.all_validations():
+                        self.sides=possible_cube
+                        return True
+        except FileNotFoundError:
+            print("El archivo no se encuentra")
+            return False
 
                 
