@@ -171,7 +171,9 @@ class Rubik_cube():
                np.all(self.sides[5] == self.sides[5][1][1])
 
     def valid_moves(self):
-        return ["U", "U'", "D", "D'", "F", "F'", "B", "B'", "R", "R'", "L", "L'"]
+        return ["U", "U'", "D", "D'", "F", "F'", "B", "B'", "R", "R'", "L", "L'"
+                # ,"S","S'","M","M'","E","E'"
+                ]
 
     def action(self,action):
         match action:
@@ -237,7 +239,7 @@ class Rubik_cube():
         manhattan_dist = self.manhattan_distance()
         misplaced = self.misplaced_pieces()
 
-        combined_cost = manhattan_dist + misplaced
+        combined_cost = 0.2*manhattan_dist + 4*misplaced
 
         return combined_cost
     def __lt__(self,other):

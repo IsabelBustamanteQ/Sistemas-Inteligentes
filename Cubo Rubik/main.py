@@ -1,6 +1,7 @@
 from Rubik_cube import Rubik_cube
 from Validator import Validator
 from Solver import Solver
+import time
 import subprocess
 if __name__ == "__main__":
     rubik=Rubik_cube()
@@ -26,9 +27,12 @@ if __name__ == "__main__":
                 rubik.show_cube()
             case "3":
                 print("Buscando solución....")
+                inicio=time.time()
                 solver=Solver(rubik)
                 response=solver.a_star_solve()
                 if not response:
                     print("Noo se encontró la solucion")
+                fin = time.time()
+                print(fin-inicio, "seg")
         wait=input("Presiona enter para continuar")
         subprocess.call(["cmd.exe", "/C", "cls"])
